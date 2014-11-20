@@ -1,0 +1,42 @@
+{
+    "name": "waterline-to-boom",
+    "version": "0.0.0",
+    "description": "Transform waterline errors to Boom errors for general hapiness.",
+    "main": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/devinivy/waterline-to-boom"
+    },
+    "contributors": [
+        {
+          "name": "devinivy",
+          "github": "https://github.com/devinivy"
+        }
+    ],
+    "keywords": [
+      "hapi",
+      "boom",
+      "plugin",
+      "waterline",
+      "dogwater",
+      "error",
+      "errors",
+      "error-handling"
+    ],
+    "dependencies": {
+        "boom": "2.6.x",
+        "lodash": "2.4.x"
+    },
+    "peerDependencies": {
+        "waterline": ">=0.10.5 <0.11.0"
+    },
+    "devDependencies": {
+        "lab": "4.x.x",
+        "waterline": ">=0.10.5 <0.11.0"
+    },
+    "scripts": {
+        "test": "make test-cov"
+    },
+    "author": "Devin Ivy",
+    "license": "MIT"
+}
