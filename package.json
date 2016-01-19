@@ -1,42 +1,42 @@
 {
-    "name": "waterline-to-boom",
-    "version": "0.1.1",
-    "description": "Transform waterline errors to Boom errors for general hapiness.",
-    "main": "lib/index.js",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/devinivy/waterline-to-boom"
-    },
-    "contributors": [
-        {
-          "name": "devinivy",
-          "github": "https://github.com/devinivy"
-        }
-    ],
-    "keywords": [
-      "hapi",
-      "boom",
-      "plugin",
-      "waterline",
-      "dogwater",
-      "error",
-      "errors",
-      "error-handling"
-    ],
-    "dependencies": {
-        "boom": "2.x.x"
-    },
-    "peerDependencies": {
-        "waterline": ">=0.10.5 <0.11.0"
-    },
-    "devDependencies": {
-        "code": "1.x.x",
-        "lab": "6.x.x",
-        "waterline": "0.10.x"
-    },
-    "scripts": {
-        "test": "node_modules/.bin/lab -I \"inspect,URI\" -a code -t 100 -L"
-    },
-    "author": "Devin Ivy",
-    "license": "MIT"
+  "name": "waterline-to-boom",
+  "version": "0.2.0",
+  "description": "Transform waterline errors to Boom errors for general hapiness.",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/devinivy/waterline-to-boom"
+  },
+  "contributors": [
+    {
+      "name": "devinivy",
+      "github": "https://github.com/devinivy"
+    }
+  ],
+  "keywords": [
+    "hapi",
+    "boom",
+    "plugin",
+    "waterline",
+    "dogwater",
+    "error",
+    "errors",
+    "error-handling"
+  ],
+  "dependencies": {
+    "boom": "2.x.x"
+  },
+  "peerDependencies": {
+    "waterline": ">=0.10.5 <0.11.0"
+  },
+  "devDependencies": {
+    "code": "1.x.x",
+    "lab": "6.x.x",
+    "waterline": "0.10.x"
+  },
+  "scripts": {
+    "test": "node_modules/.bin/lab -I \"inspect,URI\" -a code -t 100 -L"
+  },
+  "author": "Devin Ivy",
+  "license": "MIT"
 }
