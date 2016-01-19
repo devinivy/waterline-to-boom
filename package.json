@@ -2,7 +2,7 @@
     "name": "waterline-to-boom",
     "version": "0.1.1",
     "description": "Transform waterline errors to Boom errors for general hapiness.",
-    "main": "index.js",
+    "main": "lib/index.js",
     "repository": {
         "type": "git",
         "url": "https://github.com/devinivy/waterline-to-boom"
@@ -23,19 +23,18 @@
       "errors",
       "error-handling"
     ],
-    "dependencies": {
-        "boom": "2.6.x",
-        "lodash": "2.4.x"
-    },
     "peerDependencies": {
+        "boom": ">=2.6.0 <4.0.0",
         "waterline": ">=0.10.5 <0.11.0"
     },
     "devDependencies": {
-        "lab": "4.x.x",
-        "waterline": ">=0.10.5 <0.11.0"
+        "boom": "2.x.x",
+        "code": "1.x.x",
+        "lab": "6.x.x",
+        "waterline": "0.10.x"
     },
     "scripts": {
-        "test": "make test-cov"
+        "test": "node_modules/.bin/lab -I \"inspect,URI\" -a code -t 100 -L"
     },
     "author": "Devin Ivy",
     "license": "MIT"

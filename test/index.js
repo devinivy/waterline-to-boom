@@ -1,20 +1,21 @@
 // Load modules
 var Lab = require('lab');
+var Code = require('code');
 var Boom = require('boom');
 
 // The plugin
 var WL2B = require('..');
 
+// Test shortcuts
+var lab = exports.lab = Lab.script();
+var expect = Code.expect;
+var experiment = lab.experiment;
+var test = lab.test;
+
 // Waterline error types
 var WLError = require('waterline/lib/waterline/error/WLError');
 var WLValidationError = require('waterline/lib/waterline/error/WLValidationError');
 var WLUsageError = require('waterline/lib/waterline/error/WLUsageError');
-
-// Test shortcuts
-var lab = exports.lab = Lab.script();
-var expect = Lab.expect;
-var experiment = lab.experiment;
-var test = lab.test;
 
 experiment('waterline-to-boom', function () {
     
@@ -34,7 +35,7 @@ experiment('waterline-to-boom', function () {
         
         expect(processed.isBoom).to.equal(true);
         expect(processed.output.statusCode).to.equal(err.status);
-        expect(processed.message).to.equal(err.reason);
+        expect(processed.message).to.match(new RegExp('^' + err.reason));
         
         done();
     });
@@ -86,7 +87,7 @@ experiment('waterline-to-boom', function () {
         
         expect(processed.isBoom).to.equal(true);
         expect(processed.output.statusCode).to.equal(422);
-        expect(processed.output.payload.validation).to.not.exist;
+        expect(processed.output.payload.validation).to.not.exist();
         
         done();
     });
@@ -100,29 +101,31 @@ experiment('waterline-to-boom', function () {
         
         expect(processed.isBoom).to.equal(true);
         expect(processed.output.statusCode).to.equal(422);
-        expect(processed.output.payload.validation).to.not.exist;
+        expect(processed.output.payload.validation).to.not.exist();
         
         done();
     });
     
     test('returns Boom.badData with `validation` on WLValidationError with `invalidAttributes` and with `rule`.', function(done) {
         
-        var err = new WLValidationError({invalidAttributes: {
-            'thisAttr': [
-                {
-                    rule: 'isUnique'
-                }
-            ]
-        }});
+        var err = new WLValidationError({
+          invalidAttributes: {
+              thisAttr: [
+                  {
+                      rule: 'isUnique'
+                  }
+              ]
+          }
+        });
         
         var processed = WL2B(err);
         
         expect(processed.isBoom).to.equal(true);
         expect(processed.output.statusCode).to.equal(422);
-        expect(processed.output.payload.validation).to.be.an.array;
+        expect(processed.output.payload.validation).to.be.an.array();
         expect(processed.output.payload.validation).to.have.length(1);
         
-        expect(processed.output.payload.validation[0].resource).to.not.exist;
+        expect(processed.output.payload.validation[0].resource).to.not.exist();
         expect(processed.output.payload.validation[0].field).to.equal('thisAttr');
         expect(processed.output.payload.validation[0].code).to.equal('isUnique');
         
@@ -141,12 +144,12 @@ experiment('waterline-to-boom', function () {
         
         expect(processed.isBoom).to.equal(true);
         expect(processed.output.statusCode).to.equal(422);
-        expect(processed.output.payload.validation).to.be.an.array;
+        expect(processed.output.payload.validation).to.be.an.array();
         expect(processed.output.payload.validation).to.have.length(1);
         
-        expect(processed.output.payload.validation[0].resource).to.not.exist;
+        expect(processed.output.payload.validation[0].resource).to.not.exist();
         expect(processed.output.payload.validation[0].field).to.equal('thisAttr');
-        expect(processed.output.payload.validation[0].code).to.not.exist;
+        expect(processed.output.payload.validation[0].code).to.not.exist();
         
         done();
     });
@@ -165,7 +168,7 @@ experiment('waterline-to-boom', function () {
         
         expect(processed.isBoom).to.equal(true);
         expect(processed.output.statusCode).to.equal(422);
-        expect(processed.output.payload.validation).to.be.an.array;
+        expect(processed.output.payload.validation).to.be.an.array();
         expect(processed.output.payload.validation).to.have.length(1);
         
         expect(processed.output.payload.validation[0].resource).to.equal('resourceName');
@@ -194,7 +197,7 @@ experiment('waterline-to-boom', function () {
         
         expect(processed.isBoom).to.equal(true);
         expect(processed.output.statusCode).to.equal(422);
-        expect(processed.output.payload.validation).to.be.an.array;
+        expect(processed.output.payload.validation).to.be.an.array();
         expect(processed.output.payload.validation).to.have.length(1);
         
         expect(processed.output.payload.validation[0].resource).to.equal('resourceName');
@@ -224,11 +227,11 @@ experiment('waterline-to-boom', function () {
         
         expect(processed.isBoom).to.equal(true);
         expect(processed.output.statusCode).to.equal(422);
-        expect(processed.output.payload.validation).to.be.an.array;
+        expect(processed.output.payload.validation).to.be.an.array();
         expect(processed.output.payload.validation).to.have.length(1);
         
         expect(processed.output.payload.validation[0].field).to.equal('thatAttr');
-        expect(processed.output.payload.validation[0].resource).to.not.exist;
+        expect(processed.output.payload.validation[0].resource).to.not.exist();
         
         done();
     });
