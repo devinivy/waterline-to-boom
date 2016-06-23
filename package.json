@@ -27,7 +27,7 @@
     "boom": "2.x.x"
   },
   "peerDependencies": {
-    "waterline": ">=0.10.5 <0.11.0"
+    "waterline": ">=0.10.5 <0.13.0"
   },
   "devDependencies": {
     "code": "1.x.x",
