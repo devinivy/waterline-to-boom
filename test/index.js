@@ -1,37 +1,39 @@
+'use strict';
+
 // Load modules
-var Lab = require('lab');
-var Code = require('code');
-var Boom = require('boom');
+const Lab = require('lab');
+const Code = require('code');
+const Boom = require('boom');
 
 // The plugin
-var WL2B = require('..');
+const WL2B = require('..');
 
 // Test shortcuts
-var lab = exports.lab = Lab.script();
-var expect = Code.expect;
-var experiment = lab.experiment;
-var test = lab.test;
+const lab = exports.lab = Lab.script();
+const expect = Code.expect;
+const experiment = lab.experiment;
+const test = lab.test;
 
 // Waterline error types
-var WLError = require('waterline/lib/waterline/error/WLError');
-var WLValidationError = require('waterline/lib/waterline/error/WLValidationError');
-var WLUsageError = require('waterline/lib/waterline/error/WLUsageError');
+const WLError = require('waterline/lib/waterline/error/WLError');
+const WLValidationError = require('waterline/lib/waterline/error/WLValidationError');
+const WLUsageError = require('waterline/lib/waterline/error/WLUsageError');
 
-experiment('waterline-to-boom', function () {
+experiment('waterline-to-boom', () => {
 
-    test('lets Boom errors pass straight through.', function (done) {
+    test('lets Boom errors pass straight through.', (done) => {
 
-        var err = Boom.wrap(new Error());
+        const err = Boom.wrap(new Error());
 
-        expect(WL2B(err)).to.equal(err);
+        expect(WL2B(err)).to.shallow.equal(err);
         done();
     });
 
-    test('Boom-wraps WLErrors, maintaining status code and reason.', function (done) {
+    test('Boom-wraps WLErrors, maintaining status code and reason.', (done) => {
 
-        var err = new WLError();
+        const err = new WLError();
 
-        var processed = WL2B(err);
+        const processed = WL2B(err);
 
         expect(processed.isBoom).to.equal(true);
         expect(processed.output.statusCode).to.equal(err.status);
@@ -40,24 +42,11 @@ experiment('waterline-to-boom', function () {
         done();
     });
 
-    test('returns Boom.badImplementation on WLUsageError.', function (done) {
+    test('returns Boom.badImplementation on WLUsageError.', (done) => {
 
-        var err = new WLUsageError();
+        const err = new WLUsageError();
 
-        var processed = WL2B(err);
-
-        expect(processed.isBoom).to.equal(true);
-        expect(processed.output.statusCode).to.equal(500);
-        expect(processed.isDeveloperError).to.equal(true);
-
-        done();
-    });
-
-    test('returns Boom.badImplementation on non-WL type errors.', function (done) {
-
-        var err = new Error();
-
-        var processed = WL2B(err);
+        const processed = WL2B(err);
 
         expect(processed.isBoom).to.equal(true);
         expect(processed.output.statusCode).to.equal(500);
@@ -66,11 +55,11 @@ experiment('waterline-to-boom', function () {
         done();
     });
 
-    test('returns Boom.badImplementation on non-error objects.', function (done) {
+    test('returns Boom.badImplementation on non-WL type errors.', (done) => {
 
-        var err = { error: true };
+        const err = new Error();
 
-        var processed = WL2B(err);
+        const processed = WL2B(err);
 
         expect(processed.isBoom).to.equal(true);
         expect(processed.output.statusCode).to.equal(500);
@@ -79,11 +68,24 @@ experiment('waterline-to-boom', function () {
         done();
     });
 
-    test('returns Boom.badData without `validation` on WLValidationError with empty `invalidAttributes.', function (done) {
+    test('returns Boom.badImplementation on non-error objects.', (done) => {
 
-        var err = new WLValidationError({ invalidAttributes: {} });
+        const err = { error: true };
 
-        var processed = WL2B(err);
+        const processed = WL2B(err);
+
+        expect(processed.isBoom).to.equal(true);
+        expect(processed.output.statusCode).to.equal(500);
+        expect(processed.isDeveloperError).to.equal(true);
+
+        done();
+    });
+
+    test('returns Boom.badData without `validation` on WLValidationError with empty `invalidAttributes.', (done) => {
+
+        const err = new WLValidationError({ invalidAttributes: {} });
+
+        const processed = WL2B(err);
 
         expect(processed.isBoom).to.equal(true);
         expect(processed.output.statusCode).to.equal(422);
@@ -92,12 +94,12 @@ experiment('waterline-to-boom', function () {
         done();
     });
 
-    test('returns Boom.badData without `validation` on WLValidationError with undefined `invalidAttributes.', function (done) {
+    test('returns Boom.badData without `validation` on WLValidationError with undefined `invalidAttributes.', (done) => {
 
-        var err = new WLValidationError({ invalidAttributes: {} });
+        const err = new WLValidationError({ invalidAttributes: {} });
         delete err.invalidAttributes;
 
-        var processed = WL2B(err);
+        const processed = WL2B(err);
 
         expect(processed.isBoom).to.equal(true);
         expect(processed.output.statusCode).to.equal(422);
@@ -106,9 +108,9 @@ experiment('waterline-to-boom', function () {
         done();
     });
 
-    test('returns Boom.badData with `validation` on WLValidationError with `invalidAttributes` and with `rule`.', function (done) {
+    test('returns Boom.badData with `validation` on WLValidationError with `invalidAttributes` and with `rule`.', (done) => {
 
-        var err = new WLValidationError({
+        const err = new WLValidationError({
             invalidAttributes: {
                 thisAttr: [
                     {
@@ -118,7 +120,7 @@ experiment('waterline-to-boom', function () {
             }
         });
 
-        var processed = WL2B(err);
+        const processed = WL2B(err);
 
         expect(processed.isBoom).to.equal(true);
         expect(processed.output.statusCode).to.equal(422);
@@ -132,9 +134,9 @@ experiment('waterline-to-boom', function () {
         done();
     });
 
-    test('returns Boom.badData with `validation` on WLValidationError with `invalidAttributes` and without `rule`.', function (done) {
+    test('returns Boom.badData with `validation` on WLValidationError with `invalidAttributes` and without `rule`.', (done) => {
 
-        var err = new WLValidationError({
+        const err = new WLValidationError({
             invalidAttributes: {
                 'thisAttr': [
                     {}
@@ -142,7 +144,7 @@ experiment('waterline-to-boom', function () {
             }
         });
 
-        var processed = WL2B(err);
+        const processed = WL2B(err);
 
         expect(processed.isBoom).to.equal(true);
         expect(processed.output.statusCode).to.equal(422);
@@ -156,9 +158,9 @@ experiment('waterline-to-boom', function () {
         done();
     });
 
-    test('returns Boom.badData including resource name (when provided) on WLValidationError.', function (done) {
+    test('returns Boom.badData including resource name (when provided) on WLValidationError.', (done) => {
 
-        var err = new WLValidationError({
+        const err = new WLValidationError({
             invalidAttributes: {
                 'thisAttr': [
                     {
@@ -168,7 +170,7 @@ experiment('waterline-to-boom', function () {
             }
         });
 
-        var processed = WL2B(err, 'resourceName');
+        const processed = WL2B(err, 'resourceName');
 
         expect(processed.isBoom).to.equal(true);
         expect(processed.output.statusCode).to.equal(422);
@@ -180,9 +182,9 @@ experiment('waterline-to-boom', function () {
         done();
     });
 
-    test('returns Boom.badData on WLValidationError, including only allowedAttributes (using 3 args).', function (done) {
+    test('returns Boom.badData on WLValidationError, including only allowedAttributes (using 3 args).', (done) => {
 
-        var err = new WLValidationError({
+        const err = new WLValidationError({
             invalidAttributes: {
                 'thisAttr': [
                     {
@@ -197,7 +199,7 @@ experiment('waterline-to-boom', function () {
             }
         });
 
-        var processed = WL2B(err, 'resourceName', ['thatAttr']);
+        const processed = WL2B(err, 'resourceName', ['thatAttr']);
 
         expect(processed.isBoom).to.equal(true);
         expect(processed.output.statusCode).to.equal(422);
@@ -210,9 +212,9 @@ experiment('waterline-to-boom', function () {
         done();
     });
 
-    test('returns Boom.badData on WLValidationError, including only allowedAttributes (using 2 args).', function (done) {
+    test('returns Boom.badData on WLValidationError, including only allowedAttributes (using 2 args).', (done) => {
 
-        var err = new WLValidationError({
+        const err = new WLValidationError({
             invalidAttributes: {
                 thisAttr: [
                     {
@@ -227,7 +229,7 @@ experiment('waterline-to-boom', function () {
             }
         });
 
-        var processed = WL2B(err, ['thatAttr']);
+        const processed = WL2B(err, ['thatAttr']);
 
         expect(processed.isBoom).to.equal(true);
         expect(processed.output.statusCode).to.equal(422);

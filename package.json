@@ -30,12 +30,12 @@
     "waterline": ">=0.10.5 <0.13.0"
   },
   "devDependencies": {
-    "code": "1.x.x",
-    "lab": "6.x.x",
+    "code": "3.x.x",
+    "lab": "10.x.x",
     "waterline": "0.12.x"
   },
   "scripts": {
-    "test": "node_modules/.bin/lab -I \"Reflect\" -a code -t 100 -L"
+    "test": "lab -a code -t 100 -L"
   },
   "author": "Devin Ivy",
   "license": "MIT"
