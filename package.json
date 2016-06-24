@@ -1,6 +1,6 @@
 {
   "name": "waterline-to-boom",
-  "version": "0.2.1",
+  "version": "1.0.0",
   "description": "Transform waterline errors to Boom errors for general hapiness.",
   "main": "lib/index.js",
   "repository": {
